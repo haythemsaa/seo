@@ -475,7 +475,8 @@ Ce projet est sous licence MIT.
 
 - Laravel Framework
 - Vue.js
-- Tailwind CSS
+- Bootstrap 5
+- Chart.js & ApexCharts
 - Toutes les bibliothèques open-source utilisées
 
 ---
