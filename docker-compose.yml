@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: seo-master-pro-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - seo-network
+    depends_on:
+      - mysql
+      - redis
+
+  nginx:
+    image: nginx:alpine
+    container_name: seo-master-pro-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d
+    networks:
+      - seo-network
+    depends_on:
+      - app
+
+  mysql:
+    image: mysql:8.0
+    container_name: seo-master-pro-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: seo_master_pro
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_PASSWORD: secret
+      MYSQL_USER: seo_user
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - seo-network
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:7-alpine
+    container_name: seo-master-pro-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - seo-network
+    ports:
+      - "6379:6379"
+
+  horizon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: seo-master-pro-horizon
+    restart: unless-stopped
+    command: php artisan horizon
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - seo-network
+    depends_on:
+      - mysql
+      - redis
+
+networks:
+  seo-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  redis_data:
