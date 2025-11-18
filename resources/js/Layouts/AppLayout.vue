@@ -1,102 +1,194 @@
 <template>
-    <div class="min-h-screen bg-gray-50">
-        <!-- Navigation -->
-        <nav class="bg-white shadow-sm border-b border-gray-200">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
-                    <div class="flex">
-                        <!-- Logo -->
-                        <div class="flex-shrink-0 flex items-center">
-                            <Link href="/" class="text-xl font-bold text-primary-600">
-                                SEO Master Pro
-                            </Link>
-                        </div>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <aside class="sidebar" :class="{ 'show': sidebarOpen }">
+            <div class="d-flex flex-column h-100">
+                <!-- Logo -->
+                <div class="p-4 border-bottom border-secondary">
+                    <Link href="/" class="navbar-brand d-block text-center">
+                        <i class="fas fa-chart-line me-2"></i>
+                        SEO Master Pro
+                    </Link>
+                </div>
 
-                        <!-- Navigation Links -->
-                        <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                            <NavLink href="/dashboard" :active="$page.url === '/dashboard'">
-                                Dashboard
-                            </NavLink>
-                            <NavLink href="/projects" :active="$page.url.startsWith('/projects')">
-                                Projets
-                            </NavLink>
-                            <NavLink href="/keywords" :active="$page.url.startsWith('/keywords')">
-                                Mots-clés
-                            </NavLink>
-                            <NavLink href="/reports" :active="$page.url.startsWith('/reports')">
-                                Rapports
-                            </NavLink>
-                        </div>
-                    </div>
+                <!-- Navigation -->
+                <nav class="flex-grow-1 py-3">
+                    <Link v-for="item in navItems" :key="item.name"
+                          :href="item.href"
+                          class="nav-link"
+                          :class="{ 'active': isActive(item.href) }">
+                        <i :class="['fas', item.icon]"></i>
+                        {{ item.name }}
+                    </Link>
+                </nav>
 
-                    <div class="flex items-center">
-                        <!-- Subscription Badge -->
-                        <div v-if="auth.user" class="mr-4 px-3 py-1 bg-primary-100 text-primary-800 text-xs font-semibold rounded-full">
-                            {{ auth.user.organization?.subscription_plan?.toUpperCase() || 'FREE' }}
-                        </div>
-
-                        <!-- User Dropdown -->
-                        <div v-if="auth.user" class="relative">
-                            <button
-                                @click="showUserMenu = !showUserMenu"
-                                class="flex items-center text-sm font-medium text-gray-700 hover:text-gray-900"
-                            >
-                                <span>{{ auth.user.name }}</span>
-                                <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-
-                            <div
-                                v-if="showUserMenu"
-                                class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50"
-                                @click.away="showUserMenu = false"
-                            >
-                                <Link href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    Paramètres
-                                </Link>
-                                <Link href="/subscription" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    Abonnement
-                                </Link>
-                                <hr class="my-1" />
-                                <Link href="/logout" method="post" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    Déconnexion
-                                </Link>
+                <!-- User Section -->
+                <div class="p-3 border-top border-secondary">
+                    <div class="dropdown dropup">
+                        <button class="btn btn-link text-white text-decoration-none w-100 text-start dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-shape bg-gradient-primary me-2" style="width: 32px; height: 32px;">
+                                    <i class="fas fa-user text-white small"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <small class="d-block text-white fw-semibold">{{ auth.user?.name }}</small>
+                                    <small class="text-white-50" style="font-size: 0.7rem;">
+                                        {{ auth.user?.organization?.subscription_plan?.toUpperCase() || 'FREE' }}
+                                    </small>
+                                </div>
                             </div>
-                        </div>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark w-100">
+                            <li><Link class="dropdown-item" href="/settings"><i class="fas fa-cog me-2"></i>Paramètres</Link></li>
+                            <li><Link class="dropdown-item" href="/subscription"><i class="fas fa-crown me-2"></i>Abonnement</Link></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><Link class="dropdown-item" href="/logout" method="post"><i class="fas fa-sign-out-alt me-2"></i>Déconnexion</Link></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </nav>
+        </aside>
 
-        <!-- Page Content -->
-        <main>
+        <!-- Main Content -->
+        <div class="main-content flex-grow-1">
+            <!-- Top Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+                <div class="container-fluid">
+                    <button class="btn btn-link d-lg-none" @click="toggleSidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <div class="ms-auto d-flex align-items-center">
+                        <!-- Notifications -->
+                        <div class="dropdown me-3">
+                            <button class="btn btn-link position-relative" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-bell fs-5 text-muted"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                    3
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" style="width: 300px;">
+                                <li class="dropdown-header">Notifications</li>
+                                <li><a class="dropdown-item" href="#">
+                                    <div class="d-flex">
+                                        <div class="icon-shape bg-gradient-success me-2 flex-shrink-0" style="width: 32px; height: 32px;">
+                                            <i class="fas fa-arrow-up text-white small"></i>
+                                        </div>
+                                        <div class="small">
+                                            <strong>Nouveau top 3!</strong><br>
+                                            <span class="text-muted">"agence seo" est en position 2</span>
+                                        </div>
+                                    </div>
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-center text-primary" href="#">Voir tout</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Search -->
+                        <form class="d-none d-md-block me-3">
+                            <div class="input-group">
+                                <input type="search" class="form-control form-control-sm" placeholder="Rechercher...">
+                                <button class="btn btn-sm btn-outline-secondary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Subscription Badge -->
+                        <span class="badge bg-gradient-primary px-3 py-2">
+                            {{ auth.user?.organization?.subscription_plan?.toUpperCase() || 'FREE' }}
+                        </span>
+                    </div>
+                </div>
+            </nav>
+
             <!-- Flash Messages -->
-            <div v-if="flash.success" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-                <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded">
-                    <p class="text-green-700">{{ flash.success }}</p>
+            <div v-if="flash.success" class="container-fluid mt-3">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    {{ flash.success }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             </div>
 
-            <div v-if="flash.error" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-                <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded">
-                    <p class="text-red-700">{{ flash.error }}</p>
+            <div v-if="flash.error" class="container-fluid mt-3">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    {{ flash.error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             </div>
 
-            <slot />
-        </main>
+            <!-- Page Content -->
+            <main>
+                <slot />
+            </main>
+
+            <!-- Footer -->
+            <footer class="mt-5 py-4 bg-white border-top">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 text-center text-md-start">
+                            <small class="text-muted">
+                                © 2025 SEO Master Pro. Tous droits réservés.
+                            </small>
+                        </div>
+                        <div class="col-md-6 text-center text-md-end">
+                            <small class="text-muted">
+                                <a href="#" class="text-decoration-none me-3">Documentation</a>
+                                <a href="#" class="text-decoration-none me-3">Support</a>
+                                <a href="#" class="text-decoration-none">API</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import NavLink from '@/Components/NavLink.vue';
 
 const page = usePage();
-const auth = page.props.auth;
-const flash = page.props.flash;
+const auth = computed(() => page.props.auth);
+const flash = computed(() => page.props.flash);
 
-const showUserMenu = ref(false);
+const sidebarOpen = ref(false);
+
+const navItems = [
+    { name: 'Dashboard', href: '/dashboard', icon: 'fa-home' },
+    { name: 'Projets', href: '/projects', icon: 'fa-folder-open' },
+    { name: 'Mots-clés', href: '/keywords', icon: 'fa-key' },
+    { name: 'Backlinks', href: '/backlinks', icon: 'fa-link' },
+    { name: 'Audits', href: '/audits', icon: 'fa-search' },
+    { name: 'Rapports', href: '/reports', icon: 'fa-file-alt' },
+    { name: 'Recommandations', href: '/recommendations', icon: 'fa-lightbulb' },
+    { name: 'Paramètres', href: '/settings', icon: 'fa-cog' },
+];
+
+const isActive = (href) => {
+    return page.url.startsWith(href);
+};
+
+const toggleSidebar = () => {
+    sidebarOpen.value = !sidebarOpen.value;
+};
 </script>
+
+<style scoped>
+@media (max-width: 991px) {
+    .sidebar {
+        position: fixed;
+        z-index: 1050;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+    }
+}
+</style>

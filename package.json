@@ -11,23 +11,24 @@
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
-        "@tailwindcss/forms": "^0.5.7",
         "@vitejs/plugin-vue": "^5.0.0",
-        "autoprefixer": "^10.4.17",
         "axios": "^1.6.4",
         "laravel-vite-plugin": "^1.0.0",
-        "postcss": "^8.4.33",
-        "tailwindcss": "^3.4.1",
+        "sass": "^1.69.5",
         "vite": "^5.0.0",
         "vue": "^3.4.0"
     },
     "dependencies": {
-        "@headlessui/vue": "^1.7.17",
-        "@heroicons/vue": "^2.1.1",
+        "bootstrap": "^5.3.2",
+        "@popperjs/core": "^2.11.8",
         "chart.js": "^4.4.1",
-        "apexcharts": "^3.45.2",
         "vue-chartjs": "^5.3.0",
+        "animate.css": "^4.1.1",
+        "aos": "^2.3.4",
+        "sweetalert2": "^11.10.3",
+        "apexcharts": "^3.45.2",
+        "vue3-apexcharts": "^1.4.4",
         "pinia": "^2.1.7",
-        "vue-router": "^4.2.5"
+        "@fortawesome/fontawesome-free": "^6.5.1"
     }
 }
