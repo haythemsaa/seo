@@ -1,0 +1,70 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+/node_modules
+/vendor
+
+# Environment
+.env
+.env.backup
+.env.*.php
+.phpunit.result.cache
+
+# Build artifacts
+/public/hot
+/public/storage
+/public/build
+/storage/*.key
+
+# Logs
+/storage/logs/*
+!/storage/logs/.gitignore
+
+# Cache
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+
+# Testing
+/coverage
+/.phpunit.cache
+
+# Documentation (build artifacts)
+/docs/_build
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# CI/CD
+/.github/workflows/*.yml.backup
+
+# Scripts
+/scripts/*.backup
+
+# Backups
+/backups
+
+# npm
+npm-debug.log
+yarn-error.log
