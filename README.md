@@ -121,10 +121,13 @@ SEO Master Pro est une solution française complète qui permet aux agences SEO,
 ### Frontend
 - **Framework:** Vue.js 3.4+ (Composition API)
 - **Build:** Vite 5.x
-- **UI Library:** Tailwind CSS 3.x + Headless UI
-- **Charts:** Chart.js + ApexCharts
-- **State:** Pinia
+- **UI Library:** Bootstrap 5.3.2
+- **Charts:** Chart.js 4.4.1 + ApexCharts 3.45.2
+- **State:** Pinia 2.1.7
 - **HTTP:** Axios + Inertia.js
+- **Icons:** FontAwesome 6.5.1
+- **Animations:** AOS + Animate.css
+- **Notifications:** SweetAlert2 11.10.3
 
 ### Crawling & Data Processing
 - **Crawler:** Python (Scrapy) + Laravel wrapper
