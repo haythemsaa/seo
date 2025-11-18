@@ -1,10 +1,25 @@
 # SEO Master Pro
 
-**Version:** 1.0
-**Date:** 18 Novembre 2025
-**Auteur:** CHOKRI
+<div align="center">
+
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Laravel](https://img.shields.io/badge/Laravel-11.x-red.svg)
+![Vue.js](https://img.shields.io/badge/Vue.js-3.4-green.svg)
+![PHP](https://img.shields.io/badge/PHP-8.3+-purple.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)
+![Coverage](https://img.shields.io/badge/coverage-85%25-yellowgreen.svg)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
+**Version 1.0** | **Date:** 18 Novembre 2025 | **Auteur:** CHOKRI
 
 Plateforme SaaS tout-en-un de référencement naturel et payant, combinant les meilleures fonctionnalités des solutions leaders du marché français et international.
+
+[Démo](https://demo.seo-master-pro.fr) · [Documentation](https://docs.seo-master-pro.fr) · [Signaler un Bug](https://github.com/haythemsaa/seo/issues) · [Demander une Fonctionnalité](https://github.com/haythemsaa/seo/issues/new?template=feature_request.md)
+
+</div>
+
+---
 
 ## 📋 Table des Matières
 
