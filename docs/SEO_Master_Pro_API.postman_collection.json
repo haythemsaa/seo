@@ -1,0 +1,1234 @@
+{
+  "info": {
+    "name": "SEO Master Pro API",
+    "description": "Complete API documentation for SEO Master Pro - Enterprise SEO SaaS Platform\n\n## Authentication\nAll API requests require authentication using Laravel Sanctum tokens.\n\n### Getting Started:\n1. Register or login to get an access token\n2. Use the token in the Authorization header: `Bearer {token}`\n3. All authenticated routes are prefixed with `/api/v1`\n\n## Rate Limiting\n- Free: 100 requests/minute\n- Starter: 500 requests/minute\n- Professional: 2000 requests/minute\n- Agency: 10000 requests/minute\n- Enterprise: 50000 requests/minute",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "api_url",
+      "value": "{{base_url}}/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('token', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/register",
+              "host": ["{{api_url}}"],
+              "path": ["register"]
+            },
+            "description": "Register a new user account"
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('token', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/login",
+              "host": ["{{api_url}}"],
+              "path": ["login"]
+            },
+            "description": "Login with email and password to receive authentication token"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/logout",
+              "host": ["{{api_url}}"],
+              "path": ["logout"]
+            },
+            "description": "Logout and invalidate current token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/user",
+              "host": ["{{api_url}}"],
+              "path": ["user"]
+            },
+            "description": "Get authenticated user information"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "List Projects",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/projects?page=1&per_page=15&search=&status=active&sort=created_at&order=desc",
+              "host": ["{{api_url}}"],
+              "path": ["projects"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "15"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "sort",
+                  "value": "created_at"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ]
+            },
+            "description": "Get all projects for authenticated user with pagination and filtering"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"My Website\",\n    \"url\": \"https://example.com\",\n    \"description\": \"Main company website for SEO tracking\",\n    \"target_country\": \"FR\",\n    \"target_language\": \"fr\",\n    \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/projects",
+              "host": ["{{api_url}}"],
+              "path": ["projects"]
+            },
+            "description": "Create a new SEO project"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Project",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/projects/:id",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get a specific project with detailed information"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated Website Name\",\n    \"url\": \"https://example.com\",\n    \"description\": \"Updated description\",\n    \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/projects/:id",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update an existing project"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/projects/:id",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete a project (soft delete)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Project Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/projects/:id/statistics",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":id", "statistics"]
+            },
+            "description": "Get comprehensive statistics for a project"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Keywords",
+      "item": [
+        {
+          "name": "List Keywords",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/projects/:project_id/keywords?page=1&per_page=20&search=",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":project_id", "keywords"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                }
+              ],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get all keywords for a project"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Keyword",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"keyword\": \"seo tools\",\n    \"target_url\": \"https://example.com/seo-tools\",\n    \"search_engine\": \"google\",\n    \"country\": \"FR\",\n    \"language\": \"fr\",\n    \"device\": \"desktop\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/projects/:project_id/keywords",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":project_id", "keywords"],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Add a new keyword to track for a project"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Keyword",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"keyword\": \"updated keyword\",\n    \"target_url\": \"https://example.com/updated\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/keywords/:id",
+              "host": ["{{api_url}}"],
+              "path": ["keywords", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update a keyword"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Keyword",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/keywords/:id",
+              "host": ["{{api_url}}"],
+              "path": ["keywords", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete a keyword"
+          },
+          "response": []
+        },
+        {
+          "name": "Check Keyword Rankings",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/keywords/:id/check-ranking",
+              "host": ["{{api_url}}"],
+              "path": ["keywords", ":id", "check-ranking"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Manually trigger ranking check for a keyword"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Keyword History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/keywords/:id/history?period=30d",
+              "host": ["{{api_url}}"],
+              "path": ["keywords", ":id", "history"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "30d",
+                  "description": "7d, 30d, 90d, 365d"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get ranking history for a keyword"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Backlinks",
+      "item": [
+        {
+          "name": "List Backlinks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/projects/:project_id/backlinks?page=1&per_page=20&status=active&sort=domain_authority&order=desc",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":project_id", "backlinks"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "sort",
+                  "value": "domain_authority"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get all backlinks for a project"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Backlink",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"source_url\": \"https://external-site.com/article\",\n    \"target_url\": \"https://example.com/page\",\n    \"anchor_text\": \"click here\",\n    \"rel_attribute\": \"dofollow\",\n    \"domain_authority\": 65,\n    \"page_authority\": 55,\n    \"spam_score\": 2\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/projects/:project_id/backlinks",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":project_id", "backlinks"],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Add a new backlink manually"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Backlink",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"lost\",\n    \"domain_authority\": 70,\n    \"notes\": \"Link was removed\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/backlinks/:id",
+              "host": ["{{api_url}}"],
+              "path": ["backlinks", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update backlink information"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Backlink",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/backlinks/:id",
+              "host": ["{{api_url}}"],
+              "path": ["backlinks", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete a backlink"
+          },
+          "response": []
+        },
+        {
+          "name": "Check Backlinks",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/projects/:project_id/backlinks/check",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":project_id", "backlinks", "check"],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Trigger backlink check for all backlinks in project"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Audits",
+      "item": [
+        {
+          "name": "List Audits",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/projects/:project_id/audits?page=1&per_page=10",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":project_id", "audits"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "10"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get all SEO audits for a project"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Audit",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/audits/:id",
+              "host": ["{{api_url}}"],
+              "path": ["audits", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get detailed audit results"
+          },
+          "response": []
+        },
+        {
+          "name": "Start New Audit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"url\": \"https://example.com\",\n    \"depth\": 3,\n    \"max_pages\": 100,\n    \"check_broken_links\": true,\n    \"check_meta_tags\": true,\n    \"check_headings\": true,\n    \"check_images\": true,\n    \"check_performance\": true\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/projects/:project_id/audits",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":project_id", "audits"],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Start a new SEO audit for a project"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "List Reports",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/projects/:project_id/reports?page=1&per_page=10",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":project_id", "reports"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "10"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get all reports for a project"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"type\": \"monthly\",\n    \"period_start\": \"2024-01-01\",\n    \"period_end\": \"2024-01-31\",\n    \"format\": \"pdf\",\n    \"sections\": [\n        \"rankings\",\n        \"backlinks\",\n        \"traffic\",\n        \"technical_issues\"\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/projects/:project_id/reports",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":project_id", "reports"],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Generate a new SEO report"
+          },
+          "response": []
+        },
+        {
+          "name": "Download Report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/pdf"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/reports/:id/download",
+              "host": ["{{api_url}}"],
+              "path": ["reports", ":id", "download"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Download a generated report (PDF)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/analytics/dashboard",
+              "host": ["{{api_url}}"],
+              "path": ["analytics", "dashboard"]
+            },
+            "description": "Get overview statistics for the dashboard"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Project Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/projects/:project_id/analytics?period=30d&metrics=rankings,traffic,backlinks",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":project_id", "analytics"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "30d"
+                },
+                {
+                  "key": "metrics",
+                  "value": "rankings,traffic,backlinks"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get detailed analytics for a project"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Ranking Trends",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/projects/:project_id/analytics/rankings?period=90d",
+              "host": ["{{api_url}}"],
+              "path": ["projects", ":project_id", "analytics", "rankings"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "90d"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get ranking trends over time"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "Get Current Subscription",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/subscription",
+              "host": ["{{api_url}}"],
+              "path": ["subscription"]
+            },
+            "description": "Get current user subscription details"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Available Plans",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/plans",
+              "host": ["{{api_url}}"],
+              "path": ["plans"]
+            },
+            "description": "Get all available subscription plans"
+          },
+          "response": []
+        },
+        {
+          "name": "Subscribe to Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"plan\": \"professional\",\n    \"payment_method\": \"pm_card_visa\",\n    \"billing_cycle\": \"monthly\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/subscription/subscribe",
+              "host": ["{{api_url}}"],
+              "path": ["subscription", "subscribe"]
+            },
+            "description": "Subscribe to a plan"
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Subscription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/subscription/cancel",
+              "host": ["{{api_url}}"],
+              "path": ["subscription", "cancel"]
+            },
+            "description": "Cancel current subscription"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/notifications?page=1&per_page=20&unread_only=false",
+              "host": ["{{api_url}}"],
+              "path": ["notifications"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                },
+                {
+                  "key": "unread_only",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Get user notifications"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark as Read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/notifications/:id/read",
+              "host": ["{{api_url}}"],
+              "path": ["notifications", ":id", "read"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Mark a notification as read"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark All as Read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/notifications/read-all",
+              "host": ["{{api_url}}"],
+              "path": ["notifications", "read-all"]
+            },
+            "description": "Mark all notifications as read"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "List Webhooks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/webhooks",
+              "host": ["{{api_url}}"],
+              "path": ["webhooks"]
+            },
+            "description": "Get all configured webhooks"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"url\": \"https://your-app.com/webhook\",\n    \"events\": [\n        \"ranking.changed\",\n        \"backlink.found\",\n        \"audit.completed\"\n    ],\n    \"secret\": \"your-webhook-secret\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/webhooks",
+              "host": ["{{api_url}}"],
+              "path": ["webhooks"]
+            },
+            "description": "Create a new webhook endpoint"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Webhook",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/webhooks/:id",
+              "host": ["{{api_url}}"],
+              "path": ["webhooks", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete a webhook"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
